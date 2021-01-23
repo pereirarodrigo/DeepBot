@@ -1,6 +1,6 @@
 import discord
-from keep_alive import keep_alive
-import chatbot
+from server.keep_alive import keep_alive
+import src.chatbot as chatbot
 import os
 
 def main():
