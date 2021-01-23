@@ -4,11 +4,15 @@ from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 
 def build_bot():
-  bot = ChatBot(name = "DeepBot", 
-              read_only = True, 
-              logic_adapters = ["chatterbot.logic.BestMatch"],
-              silence_performance_warning = True
-              )
+  bot = ChatBot(name = "Gradient", 
+                storage_adapter = "chatterbot.storage.SQLStorageAdapter", 
+                logic_adapters = ['chatterbot.logic.MathematicalEvaluation',
+                                  'chatterbot.logic.TimeLogicAdapter',
+                                  'chatterbot.logic.BestMatch'
+                            ],
+                #silence_performance_warning = True,
+                database_uri = "sqlite:///database.db"
+                )
 
   return bot
 
