@@ -11,7 +11,6 @@ introductions = [
 
 questions = [
   "Qual é seu nome?",
-  "Você é corno?",
   "Tudo bem?",
   "Bem, e você?",
   "Como está?",
@@ -26,6 +25,5 @@ affirmations = [
   "Não muito bem",
   "Podia ser melhor",
   "Bacana",
-  "Sinto muito",
-  "Sou o CornoBot. Me dê um comando"
+  "Sinto muito"
 ]
