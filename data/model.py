@@ -4,17 +4,18 @@ import json
 import numpy as np
 import random
 import nltk
-import utils as u
-#nltk.download("punkt")
-#nltk.download("wordnet")
+from nltk.tokenize.treebank import TreebankWordTokenizer
+from nltk.data import load
+import src.utils as u
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Dropout
 from keras.optimizers import SGD
+import os 
 
 class Model:
   def __init__(self):
     # Criando o procedimento de tokenização
-    w, words, documents, classes, self._intents = self.tokenizing("...src/intents.json")
+    w, words, documents, classes, self._intents = self.tokenizing(r"src/intents.json")
 
     # Criando o procedimento de lematização
     w, words, documents, classes, lemmatizer = self.lemmatizing(w, words, documents, classes)
@@ -30,10 +31,12 @@ class Model:
     classes = []
     documents = []
     intents = json.loads(open(url).read())
+    tokenizer = load("file:portuguese.pickle")
+    treebank_word_tokenize = TreebankWordTokenizer().tokenize
 
     for intent in intents["intents"]:
-      for pattern in intent["patterns"]:
-        w = nltk.word_tokenize(pattern, language = "portuguese")
+      for pattern in tokenizer.tokenize(str(intent["patterns"])):
+        w = [w for w in treebank_word_tokenize(pattern)]
         
         words.extend(w)
         documents.append((w, intent["tag"]))
@@ -55,10 +58,10 @@ class Model:
     words = sorted(list(set(words)))
 
     # Criando os arquivos .pkl com as informações necessárias
-    u.create_pickle(words, "pickles\words.pkl")
-    u.create_pickle(words, "pickles\classes.pkl")
+    u.create_pickle(words, r"pickles/words.pkl")
+    u.create_pickle(words, r"pickles/classes.pkl")
 
-    return w, words, documents, classes
+    return w, words, documents, classes, lemmatizer
 
   def training_data(self, w, words, documents, classes, lemmatizer):
     # Criando os dados de treino
@@ -91,7 +94,7 @@ class Model:
     # Randomizando as features e transformando-as em um array
     random.shuffle(training)
 
-    training = np.array(training)
+    training = np.array(training, dtype = object)
 
     # Criando listas de treino e teste (X - padrões e Y - intents)
     train_x = list(training[:, 0])
@@ -104,17 +107,23 @@ class Model:
     # Modelo com 3 camadas (primeira com 128 neurônios, segunda com 64 e terceira
     # (output) com o número de intents para predição utilizando a função softmax)
     model = Sequential()
-    model.add(Dense(128), input_shape = (len(train_x[0]), ), activation = "relu")
+    model.add(Dense(128, input_shape = (len(train_x[0]), ), activation = "relu"))
     model.add(Dropout(0.5))
-    model.add(Dense(64), activation = "relu")
+    model.add(Dense(64, activation = "relu"))
     model.add(Dropout(0.5))
     model.add(Dense(len(train_y[0]), activation = "softmax"))
 
-    # Compilando o modelo com método do gradiente estocástico
+    # Compilando o modelo com a variação de Nesterov do método do gradiente estocástico
+    sgd = SGD(lr = 0.01, decay = 1e-6, momentum = 0.9, nesterov = True)
     
+    model.compile(loss = "categorical_crossentropy", optimizer = sgd, metrics = ["accuracy"])
+
+    # Fazendo o ajuste do modelo e salvando-o
+    hist = model.fit(np.array(train_x), np.array(train_y), epochs = 200, batch_size = 5, verbose = 1)
     
+    model.save(r"src/model.h5", hist)
 
-
+    return model
 
   def get_train_x(self):
     return self._train_x

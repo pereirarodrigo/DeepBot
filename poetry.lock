@@ -451,7 +451,7 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [metadata]
-content-hash = "7fe462ecbf13319f86f7d95eb497f17163ce04be6cdfb71881cddfef454dc2b9"
+content-hash = "e39310e5ab7a8c0dbbaf4e727b6ce4f24c5ddcf7762dd0190d2513bb30001258"
 python-versions = "^3.8"
 
 [metadata.files]

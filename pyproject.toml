@@ -11,6 +11,7 @@ discord = "^1.0.1"
 utils = "^1.0.1"
 flask = "^1.1.2"
 keras = "^2.4.3"
+nltk = "^3.5"
 
 [tool.poetry.dev-dependencies]
 

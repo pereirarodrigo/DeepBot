@@ -19,6 +19,11 @@
    "responses" : ["De nada!", "O prazer é meu!", "Não há de quê!"],
    "context" : [""]
   },
+  {"tag" : "math",
+   "patterns" : ["Qual é o valor de PI?", "PI", "Qual é o valor de E?"],
+   "responses" : ["PI = aproximadamente 3.1415", "E = aproximadamente 2.718"],
+   "context" : [""]
+   },
   {"tag" : "conversation",
    "patterns" : ["O que tá fazendo?", "O que tá fazendo", "O que faz", "O que faz de bom?", "Você gosta", "Você curte", "Gostei", "Está bem", "Tá certo", "O tempo", "O jogo", "O game", "A prova", "A faculdade", "O trabalho", "O trampo", "Quebrado", "Boa", "Por que você", "Porque", "Foi legal", "Foi daora", "Daora", "Legal", "Discord", "Server", "Servidor", "Doente"],
    

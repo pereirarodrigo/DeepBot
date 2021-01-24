@@ -1,31 +1,22 @@
-import discord
-import data.neural_net as neural
+from discord.ext import commands
 from server.keep_alive import keep_alive
-import data.chatbot as chatbot
+from data.chatbot import Chatbot as chatbot
 import os
 
 def main():
-  bot = chatbot.build_bot()
-  client = discord.Client()
+  bot = commands.Bot(command_prefix = '$')
 
-  chatbot.train_bot(bot)
-
-  @client.event
+  @bot.event
   async def on_ready():
-    print("Logado como usuário {0.user}".format(client))
+    print("Logado como usuário {0.user}".format(bot))
 
-  @client.event
-  async def on_message(message):
-    if message.author == client.user:
-      return
-
-    msg = message.content
-
-    if msg.startswith("$"):
-      await message.channel.send(bot.get_response(msg))
+  @bot.command()
+  async def talk(ctx, message):
+    if message != "":
+      await ctx.send(chatbot().chatbot_response(message))
 
   keep_alive()
-  client.run(os.getenv("TOKEN"))
+  bot.run(os.getenv("TOKEN"))
 
 if __name__ == "__main__":
   main()
