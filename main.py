@@ -1,6 +1,7 @@
 import discord
+import data.neural_net as neural
 from server.keep_alive import keep_alive
-import src.chatbot as chatbot
+import data.chatbot as chatbot
 import os
 
 def main():

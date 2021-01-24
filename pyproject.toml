@@ -1,17 +1,16 @@
 [tool.poetry]
-name = "projeto-bot"
-version = "0.1.0"
-description = ""
-authors = ["Your Name <you@example.com>"]
+name = "gradient"
+version = "0.1.1"
+description = "A Deep Learning-based Discord bot."
+authors = ["Rodrigo Pereira <pereirarodrigocs@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
 chatterbot-voice = "^0.1.5"
 discord = "^1.0.1"
-opencv-python = "^4.5.1"
-keras = "^2.4.3"
 utils = "^1.0.1"
 flask = "^1.1.2"
+keras = "^2.4.3"
 
 [tool.poetry.dev-dependencies]
 
